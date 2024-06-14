@@ -6,18 +6,19 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "../../../components/ui/dialog";
+import { Button } from "../../../components/ui/button";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "../../../components/ui/input";
+import { Textarea } from "../../../components/ui/textarea";
 import { Plus, Minus, LoaderCircle } from "lucide-react";
-import { chatSession } from "@/utils/GeminiAIModel";
-import { db } from "@/utils/db";
-import { MockInterview } from "@/utils/schema";
+import { chatSession } from "../../../utils/GeminiAIModel";
+import { db } from "../../../utils/db";
+import { MockInterview } from "../../../utils/schema";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment/moment";
+import { useRouter } from "next/navigation";
 
 function AddNewInterview() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -28,6 +29,8 @@ function AddNewInterview() {
   const [JsonResponse, setJsonResponse] = useState();
 
   const { user } = useUser();
+
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     setLoading(true);
@@ -41,7 +44,7 @@ function AddNewInterview() {
       .text()
       .replace("```json", "")
       .replace("```", "");
-    console.log(JSON.parse(MockJsonResponse));
+  
     setJsonResponse(MockJsonResponse);
 
     if (MockJsonResponse) {
@@ -63,6 +66,7 @@ function AddNewInterview() {
 
       if(response){
         setOpenDialog(false);
+        router.push(`/dashboard/interview/${response[0]?.mockId}`);
       }
       
     } else {

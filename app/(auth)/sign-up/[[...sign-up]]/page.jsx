@@ -13,7 +13,7 @@ export default function Page() {
 
           {/* Right column container */}
           <div class="md:w-8/12 lg:ms-6 lg:w-5/12">
-            <SignUp />
+            <SignUp forceRedirectUrl={"/dashboard"}/>
           </div>
         </div>
       </div>
